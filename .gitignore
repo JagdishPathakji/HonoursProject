@@ -6,3 +6,8 @@ __pycache__
 test.py
 test2.py
 test3.py
+venv
+venv312
+.venv
+*.log
+install_log*.txt

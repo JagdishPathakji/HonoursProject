@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Sign Language Project</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;800&display=swap');
+        
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #0f172a;
+            color: #f8fafc;
+            overflow: hidden;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        .slider-container {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+            transform: translateX(100%);
+            display: flex;
+            flex-direction: column;
+            padding: 40px 10%;
+            overflow-y: auto;
+            padding-bottom: 120px;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide.previous {
+            transform: translateX(-100%);
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: #38bdf8;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 6px rgba(0,0,0,0.3);
+        }
+
+        h2 {
+            font-size: 2.8rem;
+            color: #38bdf8;
+            margin-bottom: 30px;
+            border-bottom: 3px solid #334155;
+            padding-bottom: 10px;
+            margin-top: 20px;
+        }
+
+        h3 {
+            font-size: 1.8rem;
+            color: #a7f3d0;
+            margin-top: 25px;
+            margin-bottom: 10px;
+        }
+
+        p, li {
+            font-size: 1.25rem;
+            line-height: 1.8;
+            color: #cbd5e1;
+            margin-bottom: 15px;
+        }
+
+        ul, ol {
+            margin-left: 30px;
+            margin-bottom: 20px;
+        }
+
+        .highlight {
+            color: #fbbf24;
+            font-weight: 600;
+        }
+
+        .controls {
+            display: none;
+        }
+
+        button {
+            background-color: #38bdf8;
+            color: #0f172a;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.3);
+        }
+
+        button:hover {
+            background-color: #0ea5e9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(56, 189, 248, 0.5);
+        }
+        
+        button:disabled {
+            background-color: #334155;
+            cursor: not-allowed;
+            transform: none;
+            color: #64748b;
+            box-shadow: none;
+        }
+
+        .progress-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            height: 8px;
+            background: #38bdf8;
+            transition: width 0.3s ease;
+            z-index: 101;
+        }
+
+        .team-section {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            max-width: 900px;
+            margin-top: 40px;
+            background: #1e293b;
+            padding: 20px 40px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        .team-box h4 {
+            color: #fbbf24;
+            font-size: 1.4rem;
+            margin-bottom: 10px;
+            border-bottom: 2px solid #334155;
+            padding-bottom: 5px;
+        }
+
+        .team-box p {
+            margin-bottom: 5px;
+            font-size: 1.2rem;
+            color: #f8fafc;
+        }
+        
+        .logo-container {
+            background-color: white;
+            padding: 15px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            display: inline-block;
+        }
+        
+        .logo-container img {
+            height: 120px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="slider-container" id="slider">
+        <!-- Slide 1: Title -->
+        <div class="slide active">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+                <div class="logo-container">
+                    <img src="logo.png" alt="University Logo">
+                </div>
+                <h3 style="color: #cbd5e1; margin-top: 10px; margin-bottom: 5px; font-size: 1.6rem; font-weight: 600;">Birla Vishvakarma Mahavidhyalay</h3>
+                <h4 style="color: #94a3b8; margin-top: 0; margin-bottom: 25px; font-size: 1.3rem; font-weight: 300;">Department of Information Technology</h4>
+                <h1 style="font-size: 5rem; margin-bottom: 10px;">Indian Sign Language Project</h1>
+                <p style="max-width: 900px; margin-top: 10px; font-size: 1.6rem; color: #94a3b8;">An advanced, bidirectional Artificial Intelligence system translating between Spoken/Written English and Indian Sign Language (ISL).</p>
+                
+                <div class="team-section">
+                    <div class="team-box" style="text-align: left;">
+                        <h4>Developed By</h4>
+                        <p>Shekhada Hemanshi</p>
+                        <p>Jagdish Pathakji</p>
+                        <p>Yug Dholakiya</p>
+                        <p>Harsh Tandel</p>
+                    </div>
+                    <div class="team-box" style="text-align: right;">
+                        <h4>Coordinator and Guide</h4>
+                        <p>Prof Dipika Kothariya</p>
+                        <p>Prof Jalpa Ardeshana</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slide 2: Project Definition -->
+        <div class="slide">
+            <h2>Project Definition</h2>
+            <p style="font-size: 1.5rem; line-height: 2; margin-top: 20px;">The objective of this project is to develop an advanced, bidirectional Artificial Intelligence system that acts as a real-time translator between Spoken/Written English and Indian Sign Language (ISL). </p>
+            <p style="font-size: 1.5rem; line-height: 2; margin-top: 20px;">The system aims to bridge the critical communication gap for the Deaf and Hard-of-Hearing community by providing modular tools that can synthesize 3D sign language animations from text and speech, while simultaneously recognizing physical hand gestures via live computer vision to translate them back into English text.</p>
+        </div>
+
+        <!-- Slide 3: All Modules -->
+        <div class="slide">
+            <h2>System Modules</h2>
+            <p style="font-size: 1.5rem; margin-bottom: 30px;">The architecture is completely decoupled and split into five primary processing modules:</p>
+            <ol style="font-size: 1.6rem; line-height: 2.5; margin-left: 50px;">
+                <li><span class="highlight">Text-to-ISL Translation Module</span></li>
+                <li><span class="highlight">Real-time Speech-to-ISL Module</span></li>
+                <li><span class="highlight">Live ISL-to-Text Recognition Module</span></li>
+                <li><span class="highlight">Live ISL-to-Speech Translation Module</span></li>
+                <li><span class="highlight">Vector-based Medical RAG Chatbot</span></li>
+            </ol>
+        </div>
+
+        <!-- Slide 4: Module 1 -->
+        <div class="slide">
+            <h2>Module 1: Text-to-ISL Translation</h2>
+            <p><strong>Objective:</strong> Convert complex English text (like railway announcements) into continuous 3D skeleton animations for Indian Sign Language.</p>
+            
+            <h3>Deep Internal Architecture:</h3>
+            <ul>
+                <li><span class="highlight">Input Ingestion:</span> The system accepts raw English text strings from the user.</li>
+                <li><span class="highlight">NLP Preprocessing (LangChain & Groq LLM):</span> The text is fed into a highly optimized Prompt Template utilizing the <code>gpt-oss-120b</code> model via the Groq API. The LLM performs complex Natural Language Processing, specifically <strong>Lemmatization</strong> (converting words to their base root, e.g., "running" -> "run") and <strong>Part-of-Speech (POS) Tagging</strong> to strip unnecessary grammar and punctuation.</li>
+                <li><span class="highlight">Lexical Tokenization:</span> The output from the LLM is parsed into an array of strictly ISL-compliant root words.</li>
+                <li><span class="highlight">Spatial Data Mapping:</span> These tokens are mapped against <code>coordinates.csv</code>, a massive 95MB local database containing pre-recorded X, Y, Z spatial coordinates for thousands of signs.</li>
+                <li><span class="highlight">3D Skeleton Rendering:</span> Using OpenCV (<code>cv2</code>) and NumPy, the system extracts the matched coordinates and mathematically draws connecting lines between the joints (Shoulders to Elbows, Wrists to Fingers) on a dynamic canvas, rendering a continuous 3D sign language animation.</li>
+            </ul>
+        </div>
+
+        <!-- Slide 5: Module 2 -->
+        <div class="slide">
+            <h2>Module 2: Real-time Speech-to-ISL</h2>
+            <p><strong>Objective:</strong> Capture live spoken audio and immediately play back high-definition ISL video translations.</p>
+
+            <h3>Deep Internal Architecture:</h3>
+            <ul>
+                <li><span class="highlight">Hardware Interfacing:</span> The script utilizes the <code>PyAudio</code> library to interface directly with the system's microphone, capturing raw audio streams into memory buffers and encoding them as a <code>.wav</code> payload.</li>
+                <li><span class="highlight">High-Fidelity Transcription:</span> The audio payload is securely transmitted to the <strong>Sarvam AI API</strong>. Sarvam AI was explicitly integrated due to its unparalleled accuracy in parsing Indian-accented English and regional dialects, returning a highly accurate text transcription in milliseconds.</li>
+                <li><span class="highlight">Dictionary Cross-Referencing:</span> The transcribed text is validated against <code>local_video_dictionary.py</code>, a robust key-value store that acts as a router pointing to a repository of local high-definition <code>.mp4</code> video files.</li>
+                <li><span class="highlight">Seamless Video Stitching:</span> The OpenCV <code>VideoCapture</code> engine initializes a sequence for each mapped word. It buffers the frames and plays them back sequentially, ensuring zero stutter and providing a fluid, life-like sign language video translation to the user.</li>
+            </ul>
+        </div>
+
+        <!-- Slide 6: Module 3 -->
+        <div class="slide">
+            <h2>Module 3: Live ISL-to-Text Recognition</h2>
+            <p><strong>Objective:</strong> Read live physical hand gestures from a Deaf user via webcam and translate them into English text in real-time.</p>
+
+            <h3>Deep Internal Architecture:</h3>
+            <ul>
+                <li><span class="highlight">Live Computer Vision:</span> The webcam feed is captured and processed frame-by-frame using Google's <strong>MediaPipe Hands</strong> algorithm. This advanced Neural Network successfully isolates the hand from background noise and identifies 21 unique 3D spatial landmarks for each hand.</li>
+                <li><span class="highlight">Mathematical Normalization:</span> The X and Y coordinates are mathematically normalized relative to the bounding box of the user's hand. This geometric normalization ensures the prediction remains 100% accurate regardless of the user's distance or angle from the camera.</li>
+                <li><span class="highlight">Feature Vectorization:</span> The 21 spatial points are flattened into a dense 42-dimensional vector array.</li>
+                <li><span class="highlight">Random Forest Classification:</span> This dense vector is passed into a custom-trained <strong>Scikit-Learn Random Forest Classifier</strong> (stored locally as serialized Python <code>.p</code> pickle files). The Random Forest model traverses its decision trees to predict the exact gesture class.</li>
+                <li><span class="highlight">Real-Time Graphical Overlay:</span> The predicted English text is instantly drawn over the live video feed using <code>cv2.putText</code>, achieving real-time bidirectional translation.</li>
+            </ul>
+        </div>
+
+        <!-- Slide 7: Module 4 -->
+        <div class="slide">
+            <h2>Module 4: Live ISL-to-Speech Translation</h2>
+            <p><strong>Objective:</strong> Convert physical hand gestures into vocalized, spoken audio, allowing a deaf individual to "speak" aloud through the computer.</p>
+
+            <h3>Deep Internal Architecture:</h3>
+            <ul>
+                <li><span class="highlight">Live Inference Pipeline:</span> This module utilizes the exact same Computer Vision and Random Forest Machine Learning pipeline as Module 3 to instantly predict the gesture class from the webcam feed.</li>
+                <li><span class="highlight">Text-to-Speech (TTS) Routing:</span> Once the English text string is predicted, it is immediately routed into a dedicated Text-to-Speech engine (e.g., <code>pyttsx3</code>).</li>
+                <li><span class="highlight">Audio Synthesis:</span> The TTS engine synthesizes the English text into human-sounding audio and plays it aloud through the system speakers, achieving true bidirectional vocal communication.</li>
+            </ul>
+        </div>
+
+        <!-- Slide 8: Module 5 -->
+        <div class="slide">
+            <h2>Module 5: Vector-based Medical RAG Chatbot</h2>
+            <p><strong>Objective:</strong> Provide an interactive, offline AI doctor that visually signs health diagnoses back to the user.</p>
+
+            <h3>Deep Internal Architecture:</h3>
+            <ul>
+                <li><span class="highlight">RAG Architecture:</span> This module implements a cutting-edge Retrieval-Augmented Generation (RAG) pipeline designed using the LangChain framework.</li>
+                <li><span class="highlight">Vector Database Storage:</span> Massive medical PDF textbooks (dictionaries of diseases and symptoms) are mathematically chunked and converted into high-dimensional vector embeddings. These embeddings are securely indexed inside a <strong>Pinecone Vector Database</strong>.</li>
+                <li><span class="highlight">Semantic Context Retrieval:</span> When a deaf user asks a complex medical query, the system converts the query into a vector and performs a <strong>Cosine Similarity search</strong> within Pinecone to fetch the top-K most relevant medical text chunks.</li>
+                <li><span class="highlight">LLM Context Injection:</span> The retrieved medical facts are injected into a strict Prompt Template and sent to the Groq LLM. The LLM formulates a highly accurate medical diagnosis while simultaneously stripping out complex medical jargon and formatting the output specifically for Indian Sign Language structure.</li>
+                <li><span class="highlight">GPU Rendering:</span> The simplified, ISL-friendly diagnosis is finally passed back to the <code>gpu_landmark_renderer.py</code> script, which visually signs the medical advice back to the user in 3D space.</li>
+            </ul>
+        </div>
+
+        <!-- Slide 8: Technologies Used -->
+        <div class="slide">
+            <h2>Technologies & Frameworks Used</h2>
+            <ul style="font-size: 1.5rem; line-height: 2.2; margin-left: 40px; margin-top: 30px;">
+                <li><span class="highlight">Programming Language:</span> Python 3.12</li>
+                <li><span class="highlight">Large Language Models:</span> Groq API (<code>gpt-oss-120b</code>), LangChain Framework</li>
+                <li><span class="highlight">Computer Vision:</span> OpenCV (<code>cv2</code>), Google MediaPipe (Hands & Pose detection)</li>
+                <li><span class="highlight">Machine Learning:</span> Scikit-Learn (Random Forest Classifiers), NumPy, Pandas</li>
+                <li><span class="highlight">Vector Database:</span> Pinecone (For Retrieval-Augmented Generation)</li>
+                <li><span class="highlight">Audio Processing:</span> PyAudio, Sarvam AI API (Speech-to-Text Transcription)</li>
+                <li><span class="highlight">Frontend UI/UX:</span> HTML5, CSS3, JavaScript (DOM Manipulation)</li>
+            </ul>
+        </div>
+
+        <!-- Slide 9: Conclusion -->
+        <div class="slide">
+            <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center;">
+                <h1 style="font-size: 6rem; color: #fbbf24; text-shadow: 0 4px 10px rgba(0,0,0,0.5);">Thank You</h1>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls">
+            <button id="prevBtn" onclick="changeSlide(-1)">&#8592; Previous Slide</button>
+            <button id="nextBtn" onclick="changeSlide(1)">Next Slide &#8594;</button>
+        </div>
+        
+        <!-- Progress Bar -->
+        <div class="progress-bar" id="progressBar"></div>
+    </div>
+
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.slide');
+        const totalSlides = slides.length;
+        const prevBtn = document.getElementById('prevBtn');
+        const nextBtn = document.getElementById('nextBtn');
+        const progressBar = document.getElementById('progressBar');
+
+        function updateSlider() {
+            slides.forEach((slide, index) => {
+                slide.classList.remove('active', 'previous');
+                slide.scrollTop = 0;
+                
+                if (index === currentSlide) {
+                    slide.classList.add('active');
+                } else if (index < currentSlide) {
+                    slide.classList.add('previous');
+                }
+            });
+
+            prevBtn.disabled = currentSlide === 0;
+            nextBtn.disabled = currentSlide === totalSlides - 1;
+
+            const progress = ((currentSlide + 1) / totalSlides) * 100;
+            progressBar.style.width = progress + '%';
+        }
+
+        function changeSlide(direction) {
+            currentSlide += direction;
+            if (currentSlide < 0) currentSlide = 0;
+            if (currentSlide >= totalSlides) currentSlide = totalSlides - 1;
+            updateSlider();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight') {
+                changeSlide(1);
+            } else if (e.key === 'ArrowLeft') {
+                changeSlide(-1);
+            }
+        });
+
+        updateSlider();
+    </script>
+</body>
+</html>

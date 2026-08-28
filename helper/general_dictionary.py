@@ -1,4 +1,4 @@
-from utils.drive_link_placeholder import DRIVE_LINK_PLACEHOLDER
+from helper.drive_link_placeholder import DRIVE_LINK_PLACEHOLDER
 
 VIDEO_ID = {
     "anemometer": DRIVE_LINK_PLACEHOLDER.format("1U-R3V89qbKDIQL_2vjKxyoQQBqs9C6nF"),

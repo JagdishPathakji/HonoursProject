@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Project Gantt Chart</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            margin: 0;
+        }
+        .gantt-container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333;
+        }
+        table {
+            border-collapse: collapse;
+            width: 1000px;
+            text-align: center;
+            font-size: 14px;
+        }
+        th, td {
+            border: 1px solid #333;
+            padding: 10px;
+        }
+        th {
+            background-color: #fcfcfc;
+        }
+        .month-header {
+            font-weight: bold;
+        }
+        .week-header {
+            font-size: 12px;
+            color: #555;
+            width: 40px; /* Fixed width for week columns */
+        }
+        .task-col {
+            text-align: right;
+            padding-right: 15px;
+            font-weight: bold;
+            width: 250px;
+            color: #333;
+        }
+        /* Grid styling for the chart cells */
+        .gantt-cell {
+            padding: 0;
+            height: 40px;
+        }
+        .bar {
+            background-color: #f75c5c;
+            height: 100%;
+            width: 100%;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="gantt-container">
+        <h2>Project Timeline (August - November)</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th rowspan="2" class="task-col" style="text-align: center; padding-right: 0;">Tasks</th>
+                    <th colspan="4" class="month-header">August</th>
+                    <th colspan="4" class="month-header">September</th>
+                    <th colspan="4" class="month-header">October</th>
+                    <th colspan="4" class="month-header">November</th>
+                </tr>
+                <tr>
+                    <th class="week-header">W1</th><th class="week-header">W2</th><th class="week-header">W3</th><th class="week-header">W4</th>
+                    <th class="week-header">W5</th><th class="week-header">W6</th><th class="week-header">W7</th><th class="week-header">W8</th>
+                    <th class="week-header">W9</th><th class="week-header">W10</th><th class="week-header">W11</th><th class="week-header">W12</th>
+                    <th class="week-header">W13</th><th class="week-header">W14</th><th class="week-header">W15</th><th class="week-header">W16</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Task 1 -->
+                <tr>
+                    <td class="task-col">Project Planning & Requirements</td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <!-- Task 2 -->
+                <tr>
+                    <td class="task-col">Dataset Collection & Preprocessing</td>
+                    <td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <!-- Task 3 -->
+                <tr>
+                    <td class="task-col">Speech-to-ISL Module</td>
+                    <td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <!-- Task 4 -->
+                <tr>
+                    <td class="task-col">Railway Announcement (Text-to-ISL)</td>
+                    <td></td><td></td><td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <!-- Task 5 -->
+                <tr>
+                    <td class="task-col">ISL-to-Text Module</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <!-- Task 6 -->
+                <tr>
+                    <td class="task-col">ISL-to-Speech Module</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                <!-- Task 7 -->
+                <tr>
+                    <td class="task-col">Medical Chatbot (RAG) Module</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td><td></td>
+                </tr>
+                <!-- Task 8 -->
+                <tr>
+                    <td class="task-col">System Integration & Testing</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                    <td></td>
+                </tr>
+                <!-- Task 9 -->
+                <tr>
+                    <td class="task-col">Documentation & Final Submission</td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td class="gantt-cell"><span class="bar"></span></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

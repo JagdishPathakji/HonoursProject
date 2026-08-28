@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from langchain_groq import ChatGroq
 from langchain_core.prompts import PromptTemplate
-from langchain_openai import ChatOpenAI
+# from langchain_openai import ChatOpenAI
 from helper.railway_dictionary import RAILWAY_IDS
 
 class RailwaysAnnouncementPreprocessor:
@@ -25,8 +25,8 @@ class RailwaysAnnouncementPreprocessor:
       "eighteen": 18, "nineteen": 19, "twenty": 20
       }
       # self.llm = ChatOpenAI(model='gpt-4o-mini')
-      self.llm = ChatGroq(model='llama-3.1-70b-versatile')
-      # self.llm = ChatGroq(model='llama-3.3-70b-versatile')
+      # self.llm = ChatGroq(model='llama-3.1-70b-versatile')
+      self.llm = ChatGroq(model='openai/gpt-oss-120b')
 
       
    def multi_word_matcher(self,sentence):

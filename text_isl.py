@@ -11,6 +11,7 @@ from dotenv import load_dotenv
 from helper.drive_link_placeholder import DRIVE_LINK_PLACEHOLDER
 from helper.connections import CONNECTIONS_NOT_NEEDED
 from helper.general_dictionary import VIDEO_ID
+from helper.local_video_dictionary import LOCAL_VIDEO_ID
 from text_isl_preprocessing import RailwaysAnnouncementPreprocessor
 
 class GPULandmarkDetector:
@@ -233,4 +234,12 @@ async def process_sentence(words, word_to_video_map):
 if __name__ == "__main__":
     load_dotenv()
     sentence = "Good morning"
-    asyncio.run(process_sentence(sentence.lower().split(), VIDEO_ID))
+    
+    # Use LOCAL_VIDEO_ID for local videos, fallback to VIDEO_ID for Drive videos
+    video_dict = LOCAL_VIDEO_ID if LOCAL_VIDEO_ID else VIDEO_ID
+    
+    if not video_dict:
+        print("Error: No videos found!")
+        print("Please download videos using: python download_videos.py")
+    else:
+        asyncio.run(process_sentence(sentence.lower().split(), video_dict))

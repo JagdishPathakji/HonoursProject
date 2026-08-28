@@ -142,13 +142,28 @@ def render_sentence(words, renderer=None, coordinates_file="coordinates.csv"):
 
     cv2.destroyAllWindows()
 
+from dotenv import load_dotenv
+
 def main():    
-    # Render landmarks for the sentence
-    sentence = "Attention all, train rajdhani from platform 9B is leaving from Andhra Pradesh."
+    load_dotenv()
     preprocessor = RailwaysAnnouncementPreprocessor()
-    words = preprocessor.preprocess(sentence)
-    print(words)
-    render_sentence(words)
+    print("=== Text to ISL Translator ===")
+    print("Type 'exit' or 'quit' to stop.\n")
+    
+    while True:
+        sentence = input("Enter the text to translate to ISL: ")
+        if sentence.lower() in ['exit', 'quit']:
+            break
+        if not sentence.strip():
+            continue
+            
+        print("Processing text via NLP...")
+        words = preprocessor.preprocess(sentence)
+        print(f"ISL Tokens extracted: {words}")
+        print("Rendering ISL gestures on screen...")
+        
+        render_sentence(words)
+
 
 if __name__ == '__main__':
     main()

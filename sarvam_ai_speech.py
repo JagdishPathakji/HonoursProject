@@ -56,7 +56,7 @@ def speech_to_text_translate(base64_audio):
     url = "https://api.sarvam.ai/speech-to-text-translate"
 
     data = {
-        "model": "saaras:v1",
+        "model": "saaras:v2.5",
     }
 
     files = {
@@ -64,12 +64,19 @@ def speech_to_text_translate(base64_audio):
     }
 
     headers = {
-    'api-subscription-key': os.getenv('SARVAM_API_KEY')
+    'api-subscription-key': os.getenv('SARVAM_AI_API_KEY')
     }
 
     try:
         response = requests.post(url, data=data, files=files,headers=headers)
-        return [response.json()['transcript'],response.json()['language_code']]
+        print(f"API Response Status: {response.status_code}")
+        print(f"API Response: {response.json()}")
+        
+        if 'transcript' in response.json():
+            return [response.json()['transcript'],response.json()['language_code']]
+        else:
+            print("Error: 'transcript' not found in API response")
+            return {"error": "No transcript in response", "details": response.json()}
     except requests.exceptions.RequestException as e:
         return {"error": str(e)}
 
@@ -91,7 +98,7 @@ def speech_to_text_original(base64_audio,language_code):
     url = " https://api.sarvam.ai/speech-to-text"
 
     data = {
-        "model": "saarika:v1",
+        "model": "saarika:v2.5",
         "language_code": language_code
     }
 
@@ -100,7 +107,7 @@ def speech_to_text_original(base64_audio,language_code):
     }
 
     headers = {
-    'api-subscription-key': os.getenv('SARVAM_API_KEY')
+    'api-subscription-key': os.getenv('SARVAM_AI_API_KEY')
     }
 
     try:
