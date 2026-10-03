@@ -11,3 +11,10 @@ venv312
 .venv
 *.log
 install_log*.txt
+
+# Medical PDFs (large, copyrighted) - get them separately, see med_chatbot/ingest.py
+med_chatbot/data/*.pdf
+med_dataset/videos/
+sign_cache/
+# Saved interpreter conversations (medical, private)
+conversations/

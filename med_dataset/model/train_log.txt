@@ -1,0 +1,10 @@
+built 18000 train / 2700 val / 2700 stress sequences in 26s
+epoch  5  loss 0.718  val 100.0%
+epoch 10  loss 0.706  val 100.0%
+epoch 15  loss 0.699  val 100.0%
+epoch 20  loss 0.698  val 100.0%
+
+val accuracy    100.0%
+stress accuracy 100.0%
+weakest words (stress): pain 100% (-> -), fever 100% (-> -), cough 100% (-> -), cold 100% (-> -), headache 100% (-> -), vomiting 100% (-> -), dizzy 100% (-> -), breathe 100% (-> -)
+saved E:\HonoursProject\med_dataset\model\med_sign_model.pt
