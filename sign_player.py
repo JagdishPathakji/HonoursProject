@@ -17,6 +17,7 @@ from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 
 import cv2
+import numpy as np
 import requests
 
 ROOT = Path(__file__).parent
@@ -147,8 +148,27 @@ def text_to_signs(text):
     return out
 
 
+def text_card(token, seconds=1.2, size=(640, 360), fps=25):
+    """A short video showing the word as text, used when a sign video is missing or its link is broken,
+    so the word is never silently dropped (e.g. the '1' in 'take 1 tablet')."""
+    p = CACHE_DIR / f"_card_{token.replace(' ', '_')}.mp4"
+    if not p.exists():
+        CACHE_DIR.mkdir(exist_ok=True)
+        frame = np.full((size[1], size[0], 3), 250, np.uint8)
+        scale = 3.0 if len(token) <= 3 else 1.6
+        (tw, th), _ = cv2.getTextSize(token.upper(), cv2.FONT_HERSHEY_SIMPLEX, scale, 6)
+        cv2.putText(frame, token.upper(), ((size[0] - tw) // 2, (size[1] + th) // 2), cv2.FONT_HERSHEY_SIMPLEX, scale, (30, 30, 30), 6, cv2.LINE_AA)
+        cv2.putText(frame, "(no sign video)", (size[0] // 2 - 80, size[1] - 30), cv2.FONT_HERSHEY_SIMPLEX, 0.6, (120, 120, 120), 1, cv2.LINE_AA)
+        out = cv2.VideoWriter(str(p), cv2.VideoWriter_fourcc(*"mp4v"), fps, size)
+        for _ in range(int(seconds * fps)):
+            out.write(frame)
+        out.release()
+    return p
+
+
 def video_path(token):
-    """Local path of the sign video for a token, downloading it to the cache if needed. None if unavailable."""
+    """Local path of the sign video for a token, downloading it to the cache if needed.
+    Falls back to a text card if there is no video or it cannot be downloaded."""
     name = token.replace(" ", "_")
     for d in LOCAL_DIRS:
         p = d / f"{name}.mp4"
@@ -158,18 +178,18 @@ def video_path(token):
     if p.exists() and p.stat().st_size > 0:
         return p
     if token not in MED_VIDEO_IDS:
-        return None
+        return text_card(token)
     try:
         r = requests.get(MED_VIDEO_IDS[token], timeout=60)
         r.raise_for_status()
         if not r.headers.get("content-type", "").startswith("video"):
-            return None
+            return text_card(token)
         CACHE_DIR.mkdir(exist_ok=True)
         p.write_bytes(r.content)
         return p
     except requests.RequestException as e:
-        print(f"Could not download sign for '{token}': {e}")
-        return None
+        print(f"Could not download sign for '{token}' ({e}); showing it as text")
+        return text_card(token)
 
 
 class SignPlayer:

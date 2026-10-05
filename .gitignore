@@ -18,3 +18,4 @@ med_dataset/videos/
 sign_cache/
 # Saved interpreter conversations (medical, private)
 conversations/
+sign_guide/
