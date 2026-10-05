@@ -139,7 +139,8 @@ async def process_sentence(words, word_to_video_map):
     await asyncio.gather(buffer_task, stream_task)
 
 
-def init_chatbot(vectorstore):
+def init_chatbot(vectorstore, qa_system_prompt=None):
+    """qa_system_prompt: optional answer instructions (must contain {context}); defaults to ISL-style word lists."""
     llm = ChatGroq(
         groq_api_key=os.getenv("GROQ_API_KEY"),
         model_name="openai/gpt-oss-120b"
@@ -170,7 +171,7 @@ def init_chatbot(vectorstore):
     )
 
     # System prompt for answering the user's question based on retrieved documents
-    qa_system_prompt = (
+    qa_system_prompt = qa_system_prompt or (
         "You are a knowledgeable and concise medical assistant. "
         "Use the provided medical context to answer the health-related question accurately. "
         "Respond in simple, short, and direct words suitable for Indian Sign Language (ISL). "

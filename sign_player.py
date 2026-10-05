@@ -126,7 +126,8 @@ def text_to_signs(text):
     """English sentence -> list of sign tokens (dictionary words, digits, or single letters for finger-spelling)."""
     words = []
     for g in to_gloss(text):
-        words.extend(g.split())
+        # 'high-sugar' / 'blood_vessels' -> separate words, unless the whole thing has a sign (e.g. 'x-ray')
+        words.extend(g.split() if g in MED_VIDEO_IDS else re.sub(r"[-_/]", " ", g).split())
     tokens, unknown = _match(words)
     replacements = _synonyms(sorted(set(unknown)), text) if unknown else {}
 

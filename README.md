@@ -28,7 +28,8 @@ Then open `.env` and fill in `GROQ_API_KEY`, `SARVAM_AI_API_KEY` and `PINECONE_A
 | 2. Speech → ISL | `python speech_to_isl.py` | Microphone, Sarvam key |
 | 3. ISL → Text | `python inference_classifier.py` | Webcam |
 | 4. ISL → Speech | `python isl_to_speech.py` | Webcam, speakers |
-| 5. Medical chatbot | `cd med_chatbot && python main.py` | Groq + Pinecone keys |
+| **5. Medical chatbot, two-way (ISL / speech / text in and out)** | `python medical_chatbot_app.py` | Webcam, mic, speakers, Groq + Pinecone + Sarvam keys |
+| 5. Medical chatbot, terminal only (text in, text + signs out) | `cd med_chatbot && python main.py` | Groq + Pinecone keys |
 | **Medical interpreter (both directions, one screen)** | `python interpreter.py` | Webcam, mic, speakers, Groq + Sarvam keys |
 | Interpreter: patient → doctor only | `python patient_to_doctor.py` | Webcam, speakers, Groq key |
 | Interpreter: doctor → patient only | `python doctor_to_patient.py` | Mic (optional), Groq + Sarvam keys |
@@ -38,6 +39,8 @@ Then open `.env` and fill in `GROQ_API_KEY`, `SARVAM_AI_API_KEY` and `PINECONE_A
 **Patient → doctor:** the patient signs medical words one at a time (45 words: symptoms, body parts, conditions, needs, time; see `med_dataset/vocab.py`), lowering the hands between signs. Each word is shown and spoken. Enter turns the words into a sentence for the doctor using Groq (e.g. "stomach pain yesterday" → "I had stomach pain yesterday."). How the dataset and model were built is in `med_dataset/README.md`.
 
 **Doctor → patient:** the doctor types or speaks a reply (Sarvam also translates Hindi and other Indian languages). Groq rewrites it as ISL gloss (simple root words, ISL word order), each word is matched to one of ~4,800 sign videos, words without a video are replaced by a same-meaning synonym, and anything left is finger-spelled, so the meaning is never changed. Videos download once into `sign_cache/`. Example: "Take one tablet twice a day after food" → `after food 2 day tablet 1 take`.
+
+**`medical_chatbot_app.py`** (Module 5, two-way): the patient asks by signing (webcam), typing (Tab) or speaking (m; English, Hindi or another Indian language). The answer comes only from the medical book in Pinecone, in at most 2 simple sentences, and is shown as text, spoken aloud, and signed in the right pane. If the book doesn't cover the question, it says "I don't know. Please see a doctor." instead of guessing. Note: `Medical_book.pdf` is only Volume 1 (topics A–B) of the Gale Encyclopedia of Medicine; add the other volumes or another trusted source to `med_chatbot/data/` and re-run `ingest.py` for wider coverage.
 
 **`interpreter.py`** puts both directions on one screen: patient's webcam on the left, the doctor's signed reply on the right, the conversation underneath (saved to `conversations/`, which is gitignored). Keys: Enter = send the patient's signs, Tab = doctor types, m = doctor speaks, r = replay, q = quit. `--video clip.mp4` uses a recorded video instead of the webcam.
 

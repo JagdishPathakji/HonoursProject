@@ -41,7 +41,8 @@ FONT = cv2.FONT_HERSHEY_SIMPLEX
 class SignPane:
     """Plays a reply's sign videos inside the right pane, one frame per call, without blocking the webcam."""
 
-    def __init__(self):
+    def __init__(self, placeholder="Doctor's reply will be signed here"):
+        self.placeholder = placeholder
         self.clips = []  # [(token, VideoCapture)]
         self.index = 0
         self.caption = ""
@@ -82,18 +83,22 @@ class SignPane:
             cv2.putText(pane, token.upper(), (10, PANE_H - 42), FONT, 0.8, (0, 255, 255), 2, cv2.LINE_AA)
             cv2.putText(pane, f"{self.index + 1}/{len(self.clips)}", (PANE_W - 70, PANE_H - 42), FONT, 0.6, (200, 200, 200), 1)
         elif self.frame is None:
-            cv2.putText(pane, "Doctor's reply will be signed here", (110, PANE_H // 2), FONT, 0.7, (200, 200, 200), 1, cv2.LINE_AA)
+            cv2.putText(pane, self.placeholder, (110, PANE_H // 2), FONT, 0.7, (200, 200, 200), 1, cv2.LINE_AA)
         if self.caption:
             cv2.putText(pane, self.caption[:75], (10, PANE_H - 14), FONT, 0.45, (255, 255, 255), 1, cv2.LINE_AA)
         return pane
 
 
 class Interpreter:
+    TITLE = "ISL Medical Interpreter"
+    REPLY_LABEL = "Doctor"
+    HINT = "Enter: send signs | Tab: doctor types | m: doctor speaks | r: replay | q: quit"
+
     def __init__(self):
         self.recognizer = MedSignRecognizer()
         self.speaker = Speaker()
         self.holistic = mp.solutions.holistic.Holistic(static_image_mode=False, model_complexity=1)
-        self.pane = SignPane()
+        self.pane = SignPane(f"{self.REPLY_LABEL}'s reply will be signed here")
         self.events = queue.Queue()  # results from background threads: (kind, payload)
         self.words, self.last_sign, self.status = [], "", ""
         self.typing, self.typed = False, ""
@@ -127,7 +132,7 @@ class Interpreter:
 
     def _doctor_speaks(self):
         from doctor_to_patient import listen
-        self.events.put(("status", "Doctor, speak now (6 seconds)..."))
+        self.events.put(("status", "Speak now (6 seconds)..."))
         text = listen()
         if text:
             self._doctor_reply(text)
@@ -145,7 +150,7 @@ class Interpreter:
                 self.status = ""
             elif kind == "doctor":
                 text, tokens, paths = payload
-                self.log.append((datetime.now(), "Doctor", f"{text}   [signed: {' '.join(tokens)}]"))
+                self.log.append((datetime.now(), self.REPLY_LABEL, f"{text}   [signed: {' '.join(tokens)}]"))
                 self.pane.start(tokens, paths, text)
                 self.status = ""
 
@@ -206,11 +211,11 @@ class Interpreter:
         elif self.status:
             cv2.putText(panel, self.status, (10, y), FONT, 0.6, (0, 200, 255), 1, cv2.LINE_AA)
         else:
-            cv2.putText(panel, "Enter: send signs | Tab: doctor types | m: doctor speaks | r: replay | q: quit",
+            cv2.putText(panel, self.HINT,
                         (10, y), FONT, 0.5, (160, 160, 160), 1, cv2.LINE_AA)
         for t, who, text in self.log[-5:]:
             y += 28
-            colour = (120, 255, 120) if who == "Patient" else (255, 200, 120)
+            colour = (120, 255, 120) if who.startswith("Patient") else (255, 200, 120)
             cv2.putText(panel, f"{who}: {text}"[:110], (10, y), FONT, 0.5, colour, 1, cv2.LINE_AA)
         return panel
 
@@ -220,7 +225,7 @@ class Interpreter:
         cap = cv2.VideoCapture(source)
         fps = min(cap.get(cv2.CAP_PROP_FPS) or 30, 30)
         segmenter = SignSegmenter(fps)
-        print(__doc__)
+        print(sys.modules[type(self).__module__].__doc__)  # the running app's own help text
         print("Patient signs I know:", ", ".join(self.recognizer.words))
 
         while True:
@@ -250,7 +255,7 @@ class Interpreter:
             self.handle_events()
             screen = np.vstack([np.hstack([self.draw_patient(frame, segmenter.signing), self.pane.render()]),
                                 self.draw_log()])
-            cv2.imshow("ISL Medical Interpreter", screen)
+            cv2.imshow(self.TITLE, screen)
             if not self.on_key(cv2.waitKey(1) & 0xFF):
                 break
 
